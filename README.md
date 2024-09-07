@@ -4,9 +4,13 @@ O Scanner é uma ferramenta de escaneamento de portas desenvolvida em Python que
 
 
 Funcionalidades:
+
 Escaneamento de Portas: Identifica o estado das portas (abertas, fechadas e filtradas) em um endereço IP específico.
+
 Captura de Banners: Obtém e exibe banners dos serviços executando nas portas abertas.
+
 Sniffer de Pacotes: Captura e exibe pacotes de rede em uma interface especificada.
+
 Relatório em HTML: Gera um relatório detalhado em HTML com os resultados do escaneamento.
 
 Requisitos:
