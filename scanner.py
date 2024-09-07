@@ -33,12 +33,12 @@ Funções:
 Exemplo:
   python3 scanner.py 192.168.1.1 1 100
     """
-    # Cores para ajudar na formatação
+    # Cores 
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
     RESET = '\033[0m'
 
-    # Destaca a palavra "Opções" em verde
+    #  palavra "Opções" em verde
     help_text = help_text.replace('Opções:', f'{GREEN}Opções:{RESET}')
     
     print(help_text)
