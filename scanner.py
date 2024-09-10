@@ -5,22 +5,28 @@ import threading
 from datetime import datetime
 from html import escape
 
+# Definindo códigos de cores
+RED = '\033[91m'
+GREEN = '\033[92m'
+YELLOW = '\033[93m'
+RESET = '\033[0m'
+
 def print_banner():
     banner = r"""
-  ___  ___ __ _ _ __  _ __   ___ _ __ _ __  _   _ 
- / __|/ __/ _` | '_ \| '_ \ / _ \ '__| '_ \| | | |
- \__ \ (_| (_| | | | | | | |  __/ |_ | |_) | |_| |
- |___/\___\__,_|_| |_|_| |_|\___|_(_)| .__/ \__, |
-                                     |_|    |___/ 
+ ___  ___ __ _ _ __  _ __   ___ _ __ _ __  _   _ 
+/ __|/ __/ _` | '_ \| '_ \ / _ \ '__| '_ \| | | |
+\__ \ (_| (_| | | | | | | |  __/ |_ | |_) | |_| |
+|___/\___\__,_|_| |_|_| |_|\___|_(_)| .__/ \__, |
+                                    |_|    |___/ 
                              Created by: Sven
     """
     print(banner)
 
 def show_help():
-    help_text = """
+    help_text = f"""
 Uso: python3 scanner.py <IP> <porta_inicial> <porta_final>
 
-Opções:
+{GREEN}Opções:{RESET}
   <IP>              - Endereço IP do alvo para escanear.
   <porta_inicial>   - Porta inicial para o escaneamento.
   <porta_final>     - Porta final para o escaneamento.
@@ -33,16 +39,9 @@ Funções:
 Exemplo:
   python3 scanner.py 192.168.1.1 1 100
     """
-    # Cores 
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RESET = '\033[0m'
-
-    #  palavra "Opções" em verde
-    help_text = help_text.replace('Opções:', f'{GREEN}Opções:{RESET}')
-    
     print(help_text)
 
+# Função para gerar relatórios em HTML
 def generate_html_report(results, filename='relatorio.html'):
     with open(filename, 'w') as f:
         f.write('<html><body>')
@@ -71,27 +70,21 @@ def scan_port(target_ip, port, results):
     sock.settimeout(1)
     result = sock.connect_ex((target_ip, port))
     
-    # Cores para formatação dos resultados
-    GREEN = '\033[92m'
-    RED = '\033[91m'
-    YELLOW = '\033[93m'
-    RESET = '\033[0m'
-    
     if result == 0:
         service = socket.getservbyport(port, 'tcp')
-        result_str = f"{GREEN}Porta {port} está aberta - Serviço: {service}{RESET}"
+        result_str = f"{GREEN}[+] Porta {port} está aberta - Serviço: {service}{RESET}"
         print(result_str)
         results.append(result_str)
         banner_grabbing(target_ip, port)
-    elif result == 1:
-        result_str = f"{RED}Porta {port} está fechada{RESET}"
-        print(result_str)
-        results.append(result_str)
     else:
-        result_str = f"{YELLOW}Porta {port} está filtrada{RESET}"
-        print(result_str)
-        results.append(result_str)
-    
+        if result == 1:
+            result_str = f"{YELLOW}[!] Porta {port} está filtrada{RESET}"
+            print(result_str)
+            results.append(result_str)
+        else:
+            result_str = f"{RED}[-] Porta {port} está fechada{RESET}"
+            print(result_str)
+            results.append(result_str)
     sock.close()
 
 def banner_grabbing(ip, port):
@@ -114,8 +107,6 @@ def packet_sniffer(interface):
         print(packet.summary())
 
 if __name__ == "__main__":
-    print_banner()  # Exibe o banner ao iniciar o programa
-    
     if len(sys.argv) == 1:
         show_help()  # Mostra a ajuda se nenhum argumento for passado
         sys.exit(0)
@@ -123,6 +114,8 @@ if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("Uso: python3 scanner.py <IP> <porta_inicial> <porta_final>")
         sys.exit(1)
+
+    print_banner()  # Exibe o banner ao iniciar o programa
 
     ip = sys.argv[1]
     start_port = int(sys.argv[2])
