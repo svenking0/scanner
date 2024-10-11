@@ -20,7 +20,7 @@ Bibliotecas Python: scapy, html
 Instalação:
 
 Clone o repositório:
-git clone https://github.com/seu_usuario/scanner.git
+git clone https://github.com/svenking0/scanner.git
 cd scanner
 
 Instale as dependências:
