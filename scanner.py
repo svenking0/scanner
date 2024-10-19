@@ -41,7 +41,7 @@ Exemplo:
     """
     print(help_text)
 
-# Função para gerar relatórios em HTML
+
 def generate_html_report(results, filename='relatorio.html'):
     with open(filename, 'w') as f:
         f.write('<html><body>')
@@ -108,7 +108,7 @@ def packet_sniffer(interface):
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        show_help()  # Mostra a ajuda se nenhum argumento for passado
+        show_help()  
         sys.exit(0)
     
     if len(sys.argv) != 4:
@@ -121,10 +121,10 @@ if __name__ == "__main__":
     start_port = int(sys.argv[2])
     end_port = int(sys.argv[3])
     
-    # Escaneamento de portas
+    
     results = port_scanner(ip, (start_port, end_port))
     
-    # Gerar relatório em HTML
+    
     generate_html_report('\n'.join(results))
     
     sniff_choice = input("Deseja iniciar o sniffer de pacotes? (s/n): ")
